@@ -1,0 +1,16 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: "nfs-csi"
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: "192.168.1.9"
+  share: "/mnt/Fast/Kubernetes"
+  subDir: "${pvc.metadata.namespace}-${pvc.metadata.name}"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions: ["nfsvers=4.1", "nconnect=16", "hard", "noatime"]
+allowVolumeExpansion: true
